@@ -1,0 +1,6 @@
+{
+  "name": "CodeMaster Academy",
+  "description": "منصة تعليمية شاملة لتعلم البرمجة بطريقة تفاعلية.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

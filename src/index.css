@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-cairo: "Cairo", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+@layer base {
+  body {
+    direction: rtl;
+  }
+}
+
+.editor-container textarea {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  resize: none !important;
+  background: transparent !important;
+  -webkit-text-fill-color: transparent !important; /* to show syntax highlighting */
+  caret-color: white !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #1e1e1e; 
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #555; 
+  border-radius: 4px;
+}
+
