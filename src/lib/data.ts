@@ -13,7 +13,7 @@ export interface QuizQuestion {
 }
 
 export interface InteractiveData {
-  language: 'html' | 'css' | 'javascript' | 'typescript' | 'python' | 'cpp' | 'java';
+  language: 'html' | 'css' | 'javascript' | 'typescript' | 'python' | 'cpp' | 'java' | 'csharp' | 'php' | 'sql' | 'dart' | 'kotlin' | 'swift' | 'bash';
   initialCode: string;
   instructions: string;
   expectedOutput?: string;
@@ -53,25 +53,30 @@ export const specialties: Specialty[] = [
   { id: 'css', name: 'CSS', description: 'تنسيق وتصميم صفحات الويب', iconType: 'Paintbrush', color: 'bg-blue-500' },
   { id: 'js', name: 'JavaScript', description: 'لغة البرمجة التفاعلية للويب', iconType: 'FileCode2', color: 'bg-yellow-500' },
   { id: 'ts', name: 'TypeScript', description: 'JavaScript بلس', iconType: 'FileCode', color: 'bg-blue-600' },
-  { id: 'react', name: 'React', description: 'مكتبة بناء واجهات المستخدم', iconType: 'Atom', color: 'bg-cyan-500' },
-  { id: 'nextjs', name: 'Next.js', description: 'إطار عمل React المتكامل', iconType: 'Triangle', color: 'bg-black' },
-  { id: 'nodejs', name: 'Node.js', description: 'بيئة تشغيل JS على الخادم', iconType: 'Server', color: 'bg-green-600' },
-  { id: 'php', name: 'PHP', description: 'لغة برمجة خوادم الويب', iconType: 'Database', color: 'bg-indigo-500' },
   { id: 'python', name: 'Python', description: 'لغة متعددة الاستخدامات والذكاء الاصطناعي', iconType: 'Terminal', color: 'bg-yellow-600' },
+  { id: 'php', name: 'PHP', description: 'لغة برمجة خوادم الويب', iconType: 'Database', color: 'bg-indigo-500' },
   { id: 'java', name: 'Java', description: 'لغة موجهة للكائنات للشركات', iconType: 'Coffee', color: 'bg-red-500' },
   { id: 'cpp_c', name: 'C / C++', description: 'برمجة النظم والألعاب', iconType: 'Cpu', color: 'bg-blue-700' },
   { id: 'csharp', name: 'C#', description: 'لغة مايكروسوفت وتطوير الألعاب', iconType: 'Hash', color: 'bg-purple-600' },
+  { id: 'sql', name: 'SQL', description: 'قواعد البيانات العلائقية', iconType: 'Database', color: 'bg-blue-400' },
+  { id: 'react', name: 'React', description: 'مكتبة بناء واجهات المستخدم', iconType: 'Atom', color: 'bg-cyan-500' },
+  { id: 'nextjs', name: 'Next.js', description: 'إطار عمل React المتكامل', iconType: 'Triangle', color: 'bg-black' },
+  { id: 'nodejs', name: 'Node.js', description: 'بيئة تشغيل JS على الخادم', iconType: 'Server', color: 'bg-green-600' },
+  { id: 'express', name: 'Express', description: 'إطار خوادم Node.js', iconType: 'Server', color: 'bg-gray-800' },
   { id: 'flutter', name: 'Flutter', description: 'تطبيقات متعددة المنصات', iconType: 'Smartphone', color: 'bg-sky-500' },
-  { id: 'react_native', name: 'React Native', description: 'بناء تطبيقات بخبرات الويب', iconType: 'Smartphone', color: 'bg-blue-400' },
+  { id: 'dart', name: 'Dart', description: 'لغة برمجة Flutter', iconType: 'Code', color: 'bg-blue-500' },
+  { id: 'kotlin', name: 'Kotlin', description: 'تطوير تطبيقات أندرويد', iconType: 'Smartphone', color: 'bg-purple-500' },
+  { id: 'swift', name: 'Swift', description: 'تطوير تطبيقات iOS', iconType: 'Smartphone', color: 'bg-orange-600' },
   { id: 'unity', name: 'Unity', description: 'محرك ألعاب Unity الرائد', iconType: 'Gamepad2', color: 'bg-gray-800' },
   { id: 'unreal', name: 'Unreal Engine', description: 'محرك الألعاب الأقوى', iconType: 'Gamepad2', color: 'bg-blue-800' },
-  { id: 'game_dev', name: 'تطوير الألعاب', description: 'أساسيات تصميم الألعاب', iconType: 'Gamepad2', color: 'bg-emerald-600' },
-  { id: 'android', name: 'تطوير تطبيقات Android', description: 'بناء تطبيقات أندرويد أصلية', iconType: 'Smartphone', color: 'bg-green-500' },
-  { id: 'ios', name: 'تطوير تطبيقات iOS', description: 'بناء تطبيقات آيفون وآيباد', iconType: 'Smartphone', color: 'bg-gray-400' },
-  { id: 'cyber_sec', name: 'الأمن السيبراني', description: 'حماية النظم والبيانات', iconType: 'ShieldCheck', color: 'bg-red-600' },
-  { id: 'databases', name: 'قواعد البيانات', description: 'SQL & NoSQL', iconType: 'Database', color: 'bg-gray-700' },
   { id: 'git_github', name: 'Git & GitHub', description: 'إدارة النسخ والمشاريع', iconType: 'GitBranch', color: 'bg-gray-800' },
-  { id: 'algorithms', name: 'خوارزميات وهياكل بيانات', description: 'أسس البرمجة المتقدمة', iconType: 'Network', color: 'bg-teal-600' },
+  { id: 'linux', name: 'Linux', description: 'إدارة أنظمة التشغيل والسيرفرات', iconType: 'Terminal', color: 'bg-yellow-500' },
+  { id: 'cyber_sec', name: 'الأمن السيبراني', description: 'حماية النظم والبيانات', iconType: 'ShieldCheck', color: 'bg-red-600' },
+  { id: 'algorithms', name: 'الخوارزميات', description: 'أسس التفكير البرمجي', iconType: 'Network', color: 'bg-teal-600' },
+  { id: 'data_structures', name: 'هياكل البيانات', description: 'تنظيم البيانات في الذاكرة', iconType: 'Database', color: 'bg-gray-600' },
+  { id: 'web_dev', name: 'تطوير الويب الشامل', description: 'واجهات أمامية وخلفية', iconType: 'Globe', color: 'bg-indigo-600' },
+  { id: 'app_dev', name: 'تطوير التطبيقات', description: 'موبايل ديف', iconType: 'Smartphone', color: 'bg-sky-600' },
+  { id: 'game_dev', name: 'تطوير الألعاب', description: 'أساسيات تصميم الألعاب', iconType: 'Gamepad2', color: 'bg-emerald-600' },
 ];
 
 export const mockCourses: Course[] = specialties.map((specialty, idx) => ({
@@ -114,10 +119,10 @@ export const mockCourses: Course[] = specialties.map((specialty, idx) => ({
           type: 'interactive', 
           duration: 15,
           interactiveData: {
-            language: specialty.id === 'html' ? 'html' : specialty.id === 'css' ? 'css' : 'javascript',
-            initialCode: specialty.id === 'html' ? `<!-- اكتشف الكود هنا -->\n` : specialty.id === 'css' ? `/* اكتب كود CSS هنا */\nbody {}` : `// اكتب كود JS هنا\n\n// قم بتعريف متغير بالاسم msg واعطه القيمة "Hello"`,
-            instructions: specialty.id === 'html' ? 'أضف عنواناً (h1) يحتوي على كلمة "البداية".' : specialty.id === 'css' ? 'قم بتلوين الخلفية باللون الأسود.' : 'أنشئ متغير اسمه msg ويحتوي على النص "Hello" ثم اطبعه باستخدام console.log().',
-            validationRegex: specialty.id === 'html' ? '<h1.*>.*البداية.*</h1>' : specialty.id === 'css' ? 'background.*:.*black' : 'const msg = "Hello";|let msg = "Hello";|var msg = "Hello";',
+            language: ['html', 'css', 'js', 'javascript', 'ts', 'typescript', 'python', 'php', 'java', 'cpp', 'c', 'csharp', 'sql', 'dart', 'kotlin', 'swift'].includes(specialty.id.replace('_c', '')) ? (specialty.id.replace('_c', '').replace('js', 'javascript').replace('ts', 'typescript') as any) : 'javascript',
+            initialCode: specialty.id === 'html' ? `<!-- اكتشف الكود هنا -->\n` : specialty.id === 'css' ? `/* اكتب كود CSS هنا */\nbody {}` : `// اكتشف لغة ${specialty.name} و اكتب كودك هنا\n\n`,
+            instructions: specialty.id === 'html' ? 'أضف عنواناً (h1) يحتوي على كلمة "البداية".' : specialty.id === 'css' ? 'قم بتلوين الخلفية باللون الأسود.' : `استخدم لغة ${specialty.name} لتعريف متغير وطباعة كلمة Hello.`,
+            validationRegex: specialty.id === 'html' ? '<h1.*>.*البداية.*</h1>' : specialty.id === 'css' ? 'background.*:.*black' : '(?=.*Hello).*',
             hints: specialty.id === 'html' ? [
               'استخدم الوسم <h1> للعنوان الكبير.',
               'تأكد من فتح الوسم <h1> وإغلاقه </h1>.',
@@ -129,12 +134,11 @@ export const mockCourses: Course[] = specialties.map((specialty, idx) => ({
               'ضع background: black; داخل أقواس body { }.',
               'الهيكل العام: body { background: black; }'
             ] : [
-              'في جافاسكربت نستخدم let أو const لتعريف المتغيرات.',
+              'في هذه اللغة نحتاج لتعريف متغير أو طباعة كلمة.',
               'تأكد من استخدام علامات التنصيص " " حول الكلمة "Hello".',
-              'بنية المتغير: let msg = "Hello";',
-              'للطباعة نستخدم console.log(msg); أضفها في السطر التالي.'
+              'ابحث عن دالة الطباعة الخاصة باللغة.'
             ],
-            solution: specialty.id === 'html' ? '<h1>البداية</h1>' : specialty.id === 'css' ? 'body {\n  background: black;\n}' : 'let msg = "Hello";\nconsole.log(msg);',
+            solution: specialty.id === 'html' ? '<h1>البداية</h1>' : specialty.id === 'css' ? 'body {\n  background: black;\n}' : 'console.log("Hello"); // أو ما يعادلها في هذه اللغة',
             solutionExplanation: specialty.id === 'html' ? `### شرح الكود بالتفصيل:
 
 1. **\`<h1>\`**
@@ -150,7 +154,7 @@ export const mockCourses: Course[] = specialties.map((specialty, idx) => ({
    - **ماذا يفعل؟** يغلق وسم العنوان الرئيسي.
    - **لماذا استخدم؟** لنحدد بوضوح أين ينتهي هذا العنوان لنمنع تنسيق العنوان من التسرب لما بعده.
    - **ماذا سيحدث إذا تم حذفه؟** كل الكلام الذي سيُكتب بعده (حتى آخر الصفحة) سيظهر بحجم كبير وكأنه جزء من العنوان!
-   - **البدائل الممكنة:** لا يوجد بديل، الوسم يجب أن يغلق.` : specialty.id === 'css' ? 'هنا حددنا العنصر `body` وهو يمثل جسم الصفحة كاملاً. وأعطينا خاصية `background` قيمة الكلمة المحجوزة للون `black` (أسود).' : 'استخدمنا `let` (أو `const`) لحجز مساحة في الذاكرة اسمها `msg`. ووضعنا فيها قيمة نصية `Hello`. السطر الذي يليه يطبع القيمة المحفوظة في \`msg\` إلى الكونسول.'
+   - **البدائل الممكنة:** لا يوجد بديل، الوسم يجب أن يغلق.` : specialty.id === 'css' ? 'هنا حددنا العنصر `body` وهو يمثل جسم الصفحة كاملاً. وأعطينا خاصية `background` قيمة الكلمة المحجوزة للون `black` (أسود).' : 'استخدمنا دالة الطباعة وتأكدنا من كتابة Hello.'
           }
         },
       ]

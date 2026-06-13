@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useStore } from '../lib/store';
-import { BookOpen, Home, LayoutDashboard, Settings, Menu, X, Moon, Sun, Monitor } from 'lucide-react';
+import { BookOpen, Home, LayoutDashboard, Settings, Menu, X, Moon, Sun, Monitor, Briefcase } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { cn } from '../lib/utils';
 
@@ -13,6 +13,7 @@ export function AppLayout() {
   const navigation = [
     { name: 'الرئيسية', href: '/', icon: Home },
     { name: 'المسارات', href: '/courses', icon: BookOpen },
+    { name: 'مشاريع عملية', href: '/projects', icon: Briefcase },
     { name: 'لوحة التحكم', href: '/dashboard', icon: LayoutDashboard },
     { name: 'الإعدادات', href: '/settings', icon: Settings },
   ];
@@ -20,14 +21,21 @@ export function AppLayout() {
   // Handle theme
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.remove('light', 'dark');
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    const updateTheme = () => {
+      root.classList.remove('light', 'dark');
+      if (theme === 'system') {
+        const systemTheme = mediaQuery.matches ? 'dark' : 'light';
+        root.classList.add(systemTheme);
+      } else {
+        root.classList.add(theme);
+      }
+    };
 
-    if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      root.classList.add(systemTheme);
-    } else {
-      root.classList.add(theme);
-    }
+    updateTheme();
+    mediaQuery.addEventListener('change', updateTheme);
+    return () => mediaQuery.removeEventListener('change', updateTheme);
   }, [theme]);
 
   // Close sidebar on navigate
@@ -146,6 +154,7 @@ export function AppLayout() {
           <div>
              <h4 className="font-semibold mb-4">قانوني ومساعدة</h4>
             <ul className="space-y-2 text-sm text-slate-500 dark:text-slate-400">
+              <li><Link to="/about" className="hover:text-blue-600 transition-colors">من نحن</Link></li>
               <li><Link to="/contact" className="hover:text-blue-600 transition-colors">تواصل معنا</Link></li>
               <li><Link to="/faq" className="hover:text-blue-600 transition-colors">الأسئلة الشائعة</Link></li>
               <li><Link to="/privacy" className="hover:text-blue-600 transition-colors">سياسة الخصوصية</Link></li>

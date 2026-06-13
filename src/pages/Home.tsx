@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft, Code2, Cpu, Database, PlayCircle } from 'lucide-react';
 import { specialties } from '../lib/data';
 
+import { SEO } from '../components/SEO';
+
 function IconWrapper({ iconName, className, size }: { iconName: string, className?: string, size?: number }) {
   // Mapping logic for dynamic icons based on name
   let Icon = Code2;
@@ -15,6 +17,18 @@ export function Home() {
 
   return (
     <div className="space-y-20 pb-16">
+      <SEO 
+        title="الرئيسية" 
+        description="تعلم البرمجة من الصفر وحتى الاحتراف باللغة العربية عبر مسارات تفاعلية"
+        keywords="تعلم البرمجة, كورسات برمجة, لغات برمجة, أكاديمية كود ماستر"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "EducationalOrganization",
+          "name": "أكاديمية كود ماستر",
+          "description": "منصة تعليمية عربية مجانية لتعلم البرمجة وتطوير الويب والتطبيقات والألعاب من خلال التطبيق العملي.",
+          "url": "https://codemaster-academy.vercel.app/"
+        }}
+      />
       {/* Hero Section */}
       <section className="text-center py-16 px-4 md:py-24 rounded-2xl bg-gradient-to-l from-slate-800 to-slate-900 text-white relative overflow-hidden">
          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPgo8cmVjdCB3aWR0aD0iOCIgaGVpZ2h0PSI4IiBmaWxsPSIjZmZmIiBmaWxsLW9wYWNpdHk9IjAuMDUiLz4KPC9zdmc+')] opacity-20 mask-image-gradient"></div>

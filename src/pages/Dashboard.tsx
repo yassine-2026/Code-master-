@@ -3,6 +3,7 @@ import { mockCourses, getBadges, specialties } from '../lib/data';
 import { Link } from 'react-router-dom';
 import { BookOpen, Trophy, Star, History, PlayCircle, Award, CheckCircle2 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import { SEO } from '../components/SEO';
 
 export function Dashboard() {
   const store = useStore();
@@ -39,6 +40,7 @@ export function Dashboard() {
 
   return (
     <div className="space-y-8">
+      <SEO title="لوحة التحكم" description="تابع تقدمك والشارات التي حصلت عليها ومساراتك المفضلة." />
       <h1 className="text-3xl font-bold">لوحة التحكم</h1>
 
       {/* Stats Grid */}

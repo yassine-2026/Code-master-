@@ -3,6 +3,7 @@ import { InteractiveEditor } from '../components/InteractiveEditor';
 import { ArrowRight, Trophy, Award, Clock } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import { useStore } from '../lib/store';
+import { SEO } from '../components/SEO';
 
 const challengeData: Record<string, any> = {
   'algo-1': {
@@ -103,6 +104,10 @@ export function ChallengePlayer() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-6 pb-16">
+      <SEO 
+        title={`${challenge.title} | تحديات البرمجة`} 
+        description={challenge.desc.split('\n')[0]} 
+      />
       <button onClick={() => navigate('/dashboard')} className="flex items-center gap-2 text-slate-500 hover:text-slate-800 dark:hover:text-white transition-colors bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-4 py-2 rounded-xl">
         <ArrowRight size={18} /> العودة للوحة التحكم
       </button>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { specialties } from '../lib/data';
 import { Search } from 'lucide-react';
+import { SEO } from '../components/SEO';
 
 export function Courses() {
   const [search, setSearch] = useState('');
@@ -10,6 +11,10 @@ export function Courses() {
 
   return (
     <div className="space-y-8">
+      <SEO 
+        title="المسارات التعليمية" 
+        description="تصفح جميع المسارات التعليمية المتاحة لتعلم التقنيات المختلفة ولغات البرمجة."
+      />
       <div className="flex flex-col md:flex-row gap-6 justify-between items-start md:items-end">
         <div>
           <h1 className="text-3xl font-bold mb-2">المسارات التعليمية</h1>

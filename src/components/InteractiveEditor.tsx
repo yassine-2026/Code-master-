@@ -11,7 +11,7 @@ import { lintCode, LinterError } from '../lib/linter';
 
 interface InteractiveEditorProps {
   initialCode: string;
-  language: 'html' | 'css' | 'javascript' | 'typescript' | 'python' | 'cpp' | 'java';
+  language: 'html' | 'css' | 'javascript' | 'typescript' | 'python' | 'cpp' | 'java' | 'csharp' | 'php' | 'sql' | 'dart' | 'kotlin' | 'swift' | 'bash';
   instructions: string;
   validationRegex?: string;
   hints?: string[];
@@ -28,6 +28,7 @@ export function InteractiveEditor({ initialCode, language, instructions, validat
   const [showHint, setShowHint] = useState<{ active: boolean; currentHint: number }>({ active: false, currentHint: 0 });
   const [failedAttempts, setFailedAttempts] = useState(0);
   const [showingSolution, setShowingSolution] = useState(false);
+  const [canShowHints, setCanShowHints] = useState(false);
   const [canShowSolution, setCanShowSolution] = useState(false);
   const [linterError, setLinterError] = useState<LinterError | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -41,18 +42,29 @@ export function InteractiveEditor({ initialCode, language, instructions, validat
     setShowHint({ active: false, currentHint: 0 });
     setFailedAttempts(0);
     setShowingSolution(false);
+    setCanShowHints(false);
     setCanShowSolution(false);
     setLinterError(null);
   }, [initialCode]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const hintTimer = setTimeout(() => {
+      setCanShowHints(true);
+    }, 60000); // 1 minute for hints
+
+    const solutionTimer = setTimeout(() => {
       setCanShowSolution(true);
-    }, 180000); // 3 minutes
-    return () => clearTimeout(timer);
+    }, 180000); // 3 minutes for solution
+    return () => {
+      clearTimeout(hintTimer);
+      clearTimeout(solutionTimer);
+    }
   }, [initialCode]);
 
   useEffect(() => {
+    if (failedAttempts >= 1) {
+      setCanShowHints(true);
+    }
     if (failedAttempts >= 3) {
       setCanShowSolution(true);
     }
@@ -184,13 +196,13 @@ export function InteractiveEditor({ initialCode, language, instructions, validat
                تمرين تفاعلي 
                <span className="text-xs font-mono bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300 px-2 py-1 rounded uppercase">{language}</span>
             </h3>
-            {hints && hints.length > 0 && (
+            {hints && hints.length > 0 && canShowHints && (
                <button 
                  onClick={handleShowHint}
                  className="text-sm text-amber-600 hover:text-amber-700 font-semibold bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-200 flex items-center gap-1 transition-colors"
                  disabled={showHint.currentHint === hints.length}
                >
-                 💡 أحتاج مساعدة {showHint.currentHint > 0 && showHint.currentHint < hints.length && `(${showHint.currentHint}/${hints.length})`}
+                 💡 أحتاج تلميحاً {showHint.currentHint > 0 && showHint.currentHint < hints.length && `(${showHint.currentHint}/${hints.length})`}
                </button>
             )}
          </div>
@@ -209,14 +221,14 @@ export function InteractiveEditor({ initialCode, language, instructions, validat
       </div>
 
       {/* Editor & Output Workspace */}
-      <div className="flex-1 min-h-[400px] max-h-[600px] flex flex-col sm:flex-row overflow-hidden">
+      <div className="flex-1 min-h-[500px] lg:max-h-[600px] flex flex-col lg:flex-row overflow-hidden">
         {/* Editor Pane */}
-        <div className="flex-1 flex flex-col border-b sm:border-b-0 sm:border-l border-slate-200 dark:border-slate-800 shrink-0 basis-1/2 relative">
-           <div className="flex justify-between items-center bg-slate-900 text-slate-400 text-xs px-4 py-2">
+        <div className="flex-1 flex flex-col border-b lg:border-b-0 lg:border-l border-slate-200 dark:border-slate-800 lg:basis-1/2 relative min-h-[300px] lg:min-h-0 w-full overflow-hidden">
+           <div className="flex justify-between items-center bg-slate-900 text-slate-400 text-xs px-4 py-2 shrink-0">
               <span>محرر الكود</span>
               <button onClick={() => setCode(initialCode)} className="hover:text-white flex items-center gap-1"><RefreshCw size={12}/> إعادة تعيين</button>
            </div>
-           <div className="flex-1 overflow-y-auto bg-[#2d2d2d] custom-scrollbar" dir="ltr">
+           <div className="flex-1 overflow-y-auto bg-[#2d2d2d] custom-scrollbar w-full" dir="ltr">
              <Editor
                 value={code}
                 onValueChange={code => setCode(code)}
@@ -227,15 +239,16 @@ export function InteractiveEditor({ initialCode, language, instructions, validat
                   fontSize: 14,
                   minHeight: '100%',
                   color: '#e2e8f0',
-                  direction: 'ltr'
+                  direction: 'ltr',
+                  minWidth: 'max-content'
                 }}
-                className="editor-container"
+                className="editor-container w-full"
               />
            </div>
         </div>
 
         {/* Output Pane */}
-        <div className="flex-1 flex flex-col bg-white dark:bg-slate-950 basis-1/2 relative">
+        <div className="flex-1 flex flex-col bg-white dark:bg-slate-950 lg:basis-1/2 relative min-h-[300px] lg:min-h-0 w-full overflow-hidden">
            <div className="flex justify-between items-center bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 text-slate-500 text-xs px-4 py-2">
               <span>النتيجة (Output)</span>
               <button 
@@ -319,11 +332,11 @@ export function InteractiveEditor({ initialCode, language, instructions, validat
                  <ReactMarkdown>{solutionExplanation}</ReactMarkdown>
               </div>
             )}
-            <div className="mt-6 pt-4 border-t border-blue-200/50 dark:border-blue-800/50 flex gap-4">
-              <button onClick={() => { setCode(solution); setShowingSolution(false); }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold transition-colors">
+            <div className="mt-6 pt-4 border-t border-blue-200/50 dark:border-blue-800/50 flex flex-wrap gap-4">
+              <button onClick={() => { setCode(solution); setShowingSolution(false); }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold transition-colors text-sm sm:text-base w-full sm:w-auto text-center">
                 استخدام الحل في المحرر
               </button>
-              <button onClick={() => setShowingSolution(false)} className="bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50 px-4 py-2 rounded-lg font-bold transition-colors">
+              <button onClick={() => setShowingSolution(false)} className="bg-blue-100 text-blue-700 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50 px-4 py-2 rounded-lg font-bold transition-colors text-sm sm:text-base w-full sm:w-auto text-center">
                 إغلاق الإجابة
               </button>
             </div>

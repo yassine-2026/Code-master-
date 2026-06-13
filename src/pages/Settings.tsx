@@ -1,6 +1,7 @@
 import { useStore } from '../lib/store';
 import { useState } from 'react';
 import { Save, Download, Upload, AlertTriangle, CheckCircle } from 'lucide-react';
+import { SEO } from '../components/SEO';
 
 export function Settings() {
   const store = useStore();
@@ -56,6 +57,7 @@ export function Settings() {
 
   return (
     <div className="max-w-3xl mx-auto space-y-8">
+      <SEO title="الإعدادات" description="إدارة إعدادات حسابك وبياناتك على أكاديمية كود ماستر." />
       <div>
         <h1 className="text-3xl font-bold mb-2">الإعدادات والبيانات</h1>
         <p className="text-slate-500 dark:text-slate-400">تحكم ببياناتك المحفوظة محلياً. منصة كود ماستر لا تستخدم أي خوادم خارجية.</p>

@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --font-cairo: "Cairo", ui-sans-serif, system-ui, sans-serif;
@@ -18,8 +19,18 @@
   box-shadow: none !important;
   resize: none !important;
   background: transparent !important;
-  -webkit-text-fill-color: transparent !important; /* to show syntax highlighting */
+  -webkit-text-fill-color: transparent !important;
   caret-color: white !important;
+}
+
+.editor-container pre, .editor-container textarea {
+  white-space: pre !important;
+  word-wrap: normal !important;
+  overflow-wrap: normal !important;
+}
+
+.custom-scrollbar {
+  overflow: auto;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -32,5 +43,20 @@
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background: #555; 
   border-radius: 4px;
+}
+
+/* Markdown elements responsiveness */
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
+}
+.markdown-body table {
+  display: block;
+  overflow-x: auto;
+  width: 100%;
+}
+.markdown-body pre {
+  max-width: 100%;
+  overflow-x: auto;
 }
 

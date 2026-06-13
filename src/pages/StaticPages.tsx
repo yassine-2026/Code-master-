@@ -1,6 +1,9 @@
+import { SEO } from '../components/SEO';
+
 export function FAQ() {
   return (
     <div className="max-w-3xl mx-auto space-y-8 pb-16">
+      <SEO title="الأسئلة الشائعة" description="إجابات على الأسئلة الشائعة حول المنصة وطريقة الاستخدام." />
       <h1 className="text-3xl font-bold">الأسئلة الشائعة</h1>
       <div className="space-y-4">
         {[
@@ -22,6 +25,7 @@ export function FAQ() {
 export function Contact() {
   return (
     <div className="max-w-2xl mx-auto space-y-8">
+      <SEO title="تواصل معنا" description="تواصل مع فريق أكاديمية كود ماستر لأي استفسارات أو اقتراحات." />
       <h1 className="text-3xl font-bold">تواصل معنا</h1>
       <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl text-center">
         <p className="text-slate-600 dark:text-slate-300 mb-6">لأي استفسارات أو اقتراحات لتطوير المنصة، نسعد بتواصلكم عبر البريد الإلكتروني.</p>
@@ -36,6 +40,7 @@ export function Contact() {
 export function Privacy() {
   return (
     <div className="max-w-3xl mx-auto space-y-8 pb-16">
+      <SEO title="سياسة الخصوصية" description="سياسة خصوصية أكاديمية كود ماستر وكيفية حماية بياناتك." />
       <h1 className="text-3xl font-bold">سياسة الخصوصية</h1>
       <div className="prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300">
         <h3>1. جمع البيانات</h3>
@@ -49,9 +54,34 @@ export function Privacy() {
   );
 }
 
+export function About() {
+  return (
+    <div className="max-w-3xl mx-auto space-y-8 pb-16">
+      <SEO title="من نحن" description="معلومات عن أكاديمية كود ماستر وأهدافنا في تعليم البرمجة." />
+      <h1 className="text-3xl font-bold">من نحن</h1>
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-2xl">
+        <h2 className="text-2xl font-bold mb-4 text-blue-600 dark:text-blue-400">أكاديمية كود ماستر</h2>
+        <div className="prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300">
+          <p>
+            أكاديمية كود ماستر هي منصة تعليمية عربية تهدف إلى تبسيط وتعليم البرمجة من الصفر وحتى الاحتراف. 
+            نوفر بيئة تعليمية تفاعلية تعتمد على التطبيق العملي بعيداً عن الجانب النظري الممل.
+          </p>
+          <p>
+            تتميز المنصة بدعمها الكامل للتدريب التفاعلي، حيث يمكنك كتابة الأكواد وتجربتها مباشرة داخل المتصفح وبدون الحاجة لإنشاء حساب أو تثبيت أي برامج معقدة.
+          </p>
+          <p>
+            نؤمن بأن البرمجة يجب أن تكون ممتعة ومتاحة للجميع، ولذلك نقدم هذا المحتوى مجاناً.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function Terms() {
   return (
     <div className="max-w-3xl mx-auto space-y-8 pb-16">
+      <SEO title="شروط الاستخدام" description="شروط الاستخدام الخاصة بمنصة أكاديمية كود ماستر تعليم البرمجة." />
       <h1 className="text-3xl font-bold">شروط الاستخدام</h1>
       <div className="prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300">
         <h3>1. الاستخدام المقبول</h3>

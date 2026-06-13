@@ -2,6 +2,8 @@ import { useParams, Link } from 'react-router-dom';
 import { specialties, mockCourses, Course } from '../lib/data';
 import { useStore } from '../lib/store';
 import { PlayCircle, CheckCircle2, Circle, Heart, ArrowLeft, Trophy, Flag, BookOpen, Star, Zap } from 'lucide-react';
+import { cn } from '../lib/utils';
+import { SEO } from '../components/SEO';
 
 function LevelSelector({ course, onSelect }: { course: Course, onSelect: (level: any) => void }) {
   const levels = [
@@ -60,6 +62,10 @@ export function CourseDetail() {
 
   return (
     <div className="space-y-8">
+      <SEO 
+        title={course.title} 
+        description={course.description}
+      />
       {/* Header Info */}
       <div className={`${specialty.color} rounded-2xl p-8 md:p-12 text-white shadow-lg relative overflow-hidden`}>
          <div className="relative z-10 flex flex-col md:flex-row gap-8 justify-between items-start md:items-center">
@@ -108,19 +114,41 @@ export function CourseDetail() {
                  <div className="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900 text-blue-600 flex items-center justify-center text-sm">{mIdx + 1}</div>
                  {module.title}
                </div>
-               <div className="divide-y divide-slate-100 dark:divide-slate-800">
+                <div className="divide-y divide-slate-100 dark:divide-slate-800">
                  {module.lessons.map((lesson) => {
+                   const allCourseLessons = course.modules.flatMap(m => m.lessons);
+                   const lIndex = allCourseLessons.findIndex(l => l.id === lesson.id);
+                   const isLocked = lIndex > 0 && !completedLessons.includes(allCourseLessons[lIndex - 1].id);
                    const isCompleted = completedLessons.includes(lesson.id);
+                   
                    return (
-                     <Link to={`/learn/${course.id}/${lesson.id}`} key={lesson.id} className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-colors group">
+                     <Link 
+                       to={isLocked ? "#" : `/learn/${course.id}/${lesson.id}`}
+                       onClick={(e) => {
+                         if (isLocked) {
+                           e.preventDefault();
+                           alert("يجب إكمال الدروس السابقة أولاً لفتح هذا الدرس.");
+                         }
+                       }}
+                       key={lesson.id} 
+                       className={cn(
+                         "flex items-center justify-between p-4 transition-colors group",
+                         isLocked ? "opacity-50 cursor-not-allowed bg-slate-50 dark:bg-slate-900/50" : "hover:bg-slate-50 dark:hover:bg-slate-800/80"
+                       )}
+                     >
                        <div className="flex items-center gap-3">
                          {isCompleted ? (
                            <CheckCircle2 className="text-green-500" size={24} />
+                         ) : isLocked ? (
+                           <Circle className="text-slate-300 dark:text-slate-700" size={24} />
                          ) : (
                            <Circle className="text-slate-300 dark:text-slate-600 group-hover:text-blue-400 transition-colors" size={24} />
                          )}
                          <div>
-                           <div className="font-semibold">{lesson.title}</div>
+                           <div className="font-semibold flex items-center gap-2">
+                             {lesson.title}
+                             {isLocked && <span className="bg-slate-200 dark:bg-slate-700 text-slate-500 text-[10px] px-2 py-0.5 rounded-full">مقفل</span>}
+                           </div>
                            <div className="text-sm text-slate-500 flex items-center gap-2">
                              {lesson.type === 'video' ? 'فيديو' : lesson.type === 'text' ? 'قراءة' : lesson.type === 'quiz' ? 'اختبار' : 'مشروع'}
                              <span>•</span>
@@ -128,7 +156,7 @@ export function CourseDetail() {
                            </div>
                          </div>
                        </div>
-                       <PlayCircle className="text-slate-400 group-hover:text-blue-600 transition-colors" size={20} />
+                       {!isLocked && <PlayCircle className="text-slate-400 group-hover:text-blue-600 transition-colors" size={20} />}
                      </Link>
                    );
                  })}

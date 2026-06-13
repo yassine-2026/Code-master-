@@ -3,7 +3,37 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CodeMaster Academy - أكاديمية كود ماستر</title>
+    <meta name="google-site-verification" content="K0nNY5GW12F_qT3qZrXz1L8E32IHoDVcR2X1fiN3YA8" />
+    <script>
+      try {
+        const store = localStorage.getItem('codemaster-storage');
+        const theme = store ? JSON.parse(store).state.theme : 'system';
+        const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (isDark) document.documentElement.classList.add('dark');
+      } catch (e) {}
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1106363937534854" crossorigin="anonymous"></script>
+    <title>أكاديمية كود ماستر - تعلم البرمجة من الصفر حتى الاحتراف باللغة العربية</title>
+    <meta name="description" content="منصة تعليمية عربية مجانية لتعلم البرمجة وتطوير الويب والتطبيقات والألعاب من خلال التطبيق العملي وبناء مشاريع حقيقية خطوة بخطوة." />
+    <meta name="keywords" content="تعلم البرمجة, كورس برمجة, تطوير الويب, HTML, CSS, JavaScript, React, Python, برمجة تطبيقات, برمجة ألعاب" />
+    <link rel="canonical" href="https://codemaster-academy.vercel.app/" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://codemaster-academy.vercel.app/" />
+    <meta property="og:title" content="أكاديمية كود ماستر - تعلم البرمجة" />
+    <meta property="og:description" content="منصة تعليمية مجانية لتعلم البرمجة باللغة العربية عبر التطبيق العملي المباشر." />
+    <meta property="og:site_name" content="CodeMaster Academy" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://codemaster-academy.vercel.app/" />
+    <meta property="twitter:title" content="أكاديمية كود ماستر - تعلم البرمجة" />
+    <meta property="twitter:description" content="منصة تعليمية لمساعدة العرب على تعلم البرمجة عملياً من الصفر حتى الاحتراف مجاناً." />
+
+    <!-- Google Verification Placeholder -->
+    <meta name="google-site-verification" content="ADD_YOUR_VERIFICATION_CODE_HERE" />
+
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   </head>
   <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-50 font-cairo antialiased selection:bg-blue-500 selection:text-white min-h-screen flex flex-col">

@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import { CheckCircle2, ChevronRight, ChevronLeft, List, Trophy, PlayCircle } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { InteractiveEditor } from '../components/InteractiveEditor';
+import { SEO } from '../components/SEO';
 
 export function LessonPlayer() {
   const { courseId, lessonId } = useParams();
@@ -60,9 +61,18 @@ export function LessonPlayer() {
 
   const handleComplete = () => {
     if (currentLesson.type === 'interactive' && !interactivePassed) {
-       alert("الرجاء اجتياز التمرين التفاعلي أولاً للتمكن من الانتقال للدرس التالي.");
+       alert("أكمل التمرين أولاً قبل الانتقال للدرس التالي.");
        return;
     }
+    
+    if (currentLesson.type === 'quiz') {
+       const score = quizResults[currentLesson.id] ?? quizScore ?? null;
+       if (score === null || score < 80) {
+          alert("يجب اجتياز الاختبار بنجاح قبل المتابعة.");
+          return;
+       }
+    }
+
     markLessonComplete(course.id, currentLesson.id);
     if (nextLesson) {
       navigate(`/learn/${course.id}/${nextLesson.id}`);
@@ -105,10 +115,13 @@ export function LessonPlayer() {
 
   return (
     <div className="flex bg-white dark:bg-slate-950 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden min-h-[calc(100vh-8rem)]">
-      
+      <SEO 
+        title={`${currentLesson?.title || 'جاري التحميل'} - ${course.title}`} 
+        description={`شرح وتطبيق عملي لدرس ${currentLesson?.title} ضمن مسار ${course.title}`}
+      />
       {/* Sidebar for Navigation */}
       <div className={cn(
-        "w-80 bg-slate-50 dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shrink-0 flex flex-col transition-all absolute md:relative z-20 h-full",
+        "w-80 max-w-[85vw] bg-slate-50 dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shrink-0 flex flex-col transition-all absolute md:relative z-20 h-full",
         sidebarOpen ? "translate-x-0 right-0 shadow-2xl" : "translate-x-full right-0 md:translate-x-0"
       )}>
         <div className="p-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center bg-white dark:bg-slate-900 sticky top-0">
@@ -120,23 +133,51 @@ export function LessonPlayer() {
             <div key={m.id}>
               <div className="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 px-2">وحدة {i + 1}: {m.title}</div>
               <div className="space-y-1">
-                {m.lessons.map(l => (
-                  <Link 
-                    key={l.id} 
-                    to={`/learn/${course.id}/${l.id}`}
-                    onClick={() => setSidebarOpen(false)}
-                    className={cn(
+                {m.lessons.map(l => {
+                  const lIndex = allLessons.findIndex(x => x.id === l.id);
+                  const isLocked = lIndex > 0 && !completedLessons.includes(allLessons[lIndex - 1].id);
+                  
+                  return (
+                    <div key={l.id} className={cn(
                       "flex items-center justify-between p-2 rounded-lg text-sm transition-colors",
-                      l.id === currentLesson.id ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 font-bold" : "hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300"
+                      l.id === currentLesson.id ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 font-bold" 
+                      : isLocked ? "opacity-50 cursor-not-allowed" 
+                      : "hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 cursor-pointer",
                     )}
-                  >
-                    <span className="truncate ml-2">{l.title}</span>
-                    <div className="flex items-center gap-2">
-                       <span className="text-[10px] text-slate-400">{getTypeLabel(l.type)}</span>
-                       {completedLessons.includes(l.id) && <CheckCircle2 size={16} className="text-green-500 shrink-0" />}
+                    onClick={(e) => {
+                       if (isLocked) {
+                         e.preventDefault();
+                         alert("يجب إكمال الدروس السابقة أولاً لفتح هذا الدرس.");
+                         return;
+                       }
+                       if (currentLesson.id !== l.id) {
+                         // Check if we are leaving an unfinished mandatory lesson
+                         if (currentLesson.type === 'interactive' && !interactivePassed) {
+                            e.preventDefault();
+                            alert("أكمل التمرين الحالي أولاً قبل الانتقال لدرس آخر.");
+                            return;
+                         }
+                         if (currentLesson.type === 'quiz') {
+                            const score = quizResults[currentLesson.id] ?? quizScore ?? null;
+                            if (score === null || score < 80) {
+                               e.preventDefault();
+                               alert("يجب اجتياز الاختبار الحالي بنجاح قبل المتابعة.");
+                               return;
+                            }
+                         }
+                         setSidebarOpen(false);
+                         navigate(`/learn/${course.id}/${l.id}`);
+                       }
+                    }}>
+                      <span className="truncate ml-2 text-right">{l.title}</span>
+                      <div className="flex items-center gap-2">
+                         {isLocked && <span className="text-[10px] text-slate-400">🔒 مقفل</span>}
+                         {!isLocked && <span className="text-[10px] text-slate-400">{getTypeLabel(l.type)}</span>}
+                         {completedLessons.includes(l.id) && <CheckCircle2 size={16} className="text-green-500 shrink-0" />}
+                      </div>
                     </div>
-                  </Link>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ))}
@@ -261,14 +302,18 @@ export function LessonPlayer() {
              )}
 
              {/* Navigation Footer */}
-             <div className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center">
+               <div className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
                 {nextLesson ? (
                    <button 
                      onClick={handleComplete}
-                     disabled={(currentLesson.type === 'interactive' && !interactivePassed) || (currentLesson.type === 'quiz' && (quizResults[currentLesson.id] === undefined && quizScore === null)) || (currentLesson.type === 'quiz' && (quizResults[currentLesson.id] || quizScore || 0) < 80)}
+                     disabled={
+                       (currentLesson.type === 'interactive' && !interactivePassed) || 
+                       (currentLesson.type === 'quiz' && (quizResults[currentLesson.id] === undefined && quizScore === null)) || 
+                       (currentLesson.type === 'quiz' && (quizResults[currentLesson.id] || quizScore || 0) < 80)
+                     }
                      className={cn(
-                       "font-bold py-3 px-6 rounded-xl flex items-center gap-2 transition-transform shadow-md",
-                       ((currentLesson.type === 'interactive' && !interactivePassed) || (currentLesson.type === 'quiz' && (quizResults[currentLesson.id] === undefined && quizScore === null)) || (currentLesson.type === 'quiz' && (quizResults[currentLesson.id] || quizScore || 0) < 80)) ? "bg-slate-200 dark:bg-slate-800 text-slate-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 text-white hover:scale-105"
+                       "font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-transform shadow-md border w-full sm:w-auto text-sm sm:text-base",
+                       ((currentLesson.type === 'interactive' && !interactivePassed) || (currentLesson.type === 'quiz' && (quizResults[currentLesson.id] === undefined && quizScore === null)) || (currentLesson.type === 'quiz' && (quizResults[currentLesson.id] || quizScore || 0) < 80)) ? "bg-slate-50 dark:bg-slate-800/50 text-slate-400 border-slate-200 dark:border-slate-700 opacity-80 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 text-white border-transparent hover:scale-105 shadow-blue-600/20"
                      )}
                    >
                      {isCompleted ? 'الدرس التالي' : 'إكمال والمتابعة'}
@@ -277,7 +322,7 @@ export function LessonPlayer() {
                 ) : (
                   <button 
                      onClick={() => navigate(`/course/${course.id}`)}
-                     className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl flex items-center gap-2 transition-transform hover:scale-105 shadow-md"
+                     className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl flex justify-center items-center gap-2 transition-transform hover:scale-105 shadow-md w-full sm:w-auto text-sm sm:text-base"
                    >
                      إنهاء التخصص
                      <Trophy size={20} />
@@ -287,7 +332,7 @@ export function LessonPlayer() {
                 {prevLesson && (
                    <Link 
                      to={`/learn/${course.id}/${prevLesson.id}`}
-                     className="text-slate-500 hover:text-black dark:text-slate-400 dark:hover:text-white font-semibold py-3 px-6 rounded-xl flex items-center gap-2 transition-colors bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700"
+                     className="text-slate-500 hover:text-black dark:text-slate-400 dark:hover:text-white font-semibold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-colors bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 w-full sm:w-auto text-sm sm:text-base"
                    >
                      <ChevronRight size={20} />
                      السابق
